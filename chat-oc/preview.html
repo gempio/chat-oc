@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://pms.devtest.guestline.net/rezlynx1500/bundles/core/css" />
+    <link
+      rel="stylesheet"
+      href="https://pms.devtest.guestline.net/rezlynx1500/bundles/mainpage/main"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      div#header #Menu {
+        background: var(--gl-theme-color-primary-100);
+      }
+      #Menu {
+        background-color: #0e80a7;
+        color: #fff;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        position: relative;
+        min-height: 40px;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+      }
+      .row {
+        display: flex;
+      }
+      .column {
+        flex: 50%;
+        padding: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <div id="Menu">
+        <div style="margin-left: 10px">🏠</div>
+      </div>
+    </div>
+
+    <div id="component">
+      <div class="row">
+          <oc-component
+            href="//localhost:3030/ocboilerplate/?siteId=MEESEEKS"
+          ></oc-component>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.oc = window.oc || {};
+      window.oc.cmd = window.oc.cmd || [];
+      window.oc.conf = window.oc.conf || {};
+
+      window.oc.conf.templates = [
+        {
+          type: 'oc-template-typescript-react',
+          externals: [
+            {
+              global: 'React',
+              url: 'https://unpkg.com/react@17.0.2/umd/react.production.min.js'
+            },
+            {
+              global: 'ReactDOM',
+              url: 'https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js'
+            }
+          ]
+        }
+      ];
+    </script>
+    <script src="//localhost:3030/oc-client/client.js"></script>
+  </body>
+</html>
