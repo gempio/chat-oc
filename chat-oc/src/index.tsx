@@ -1,6 +1,7 @@
 import './init';
 import React from 'react';
 import { AuthProvider } from '@guestlinelabs/react-auth';
+import { Configuration, OpenAIApi } from "openai";
 
 import { ClientProps, GetData } from './types';
 import { AppInsightsContextProvider } from './client/contexts/AppInsightsContext';
@@ -20,6 +21,11 @@ declare module 'react' {
 interface IndexProps extends ClientProps {
   getData: GetData;
 }
+
+const configuration = new Configuration({
+  apiKey: '',
+});
+const openai = new OpenAIApi(configuration);
 
 const Index = (props: IndexProps) => {
   const { lang, siteId, instrumentationKey } = props;
@@ -55,7 +61,7 @@ const Index = (props: IndexProps) => {
         <I18nProvider language={lang}>
           <MuiProvider>
             <ErrorBoundary FallbackComponent={ErrorFallBack}>
-              <App />
+              <App openai={openai} />
             </ErrorBoundary>
           </MuiProvider>
         </I18nProvider>

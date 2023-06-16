@@ -1,5 +1,4 @@
 // Import necessary packages
-// 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
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -10,8 +9,6 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import { formatDistanceToNow } from 'date-fns';
-import axios from 'axios';
-
 
 // ChatBox component for displaying messages
 const ChatBox = ({ messages }) => (
@@ -65,29 +62,25 @@ const ChatInput = ({ sendMessage }) => {
   );
 };
 
-// Main Chat component
-const Chat = () => {
+const App: React.FC<any> = ({ openai }) => {
   const [messages, setMessages] = useState([]);
+  const [history, setHistory] = useState([
+    { role: "system", content: 'assume the role of hotel receptionist' }
+  ]);
 
   const sendMessage = async (message, sender) => {
     setMessages(oldMessages => [...oldMessages, { text: message, timestamp: new Date(), sender: sender }]);
+    setHistory(oldHistory => [...oldHistory, { role: "user", content: message }])
     if (sender === 'John Doe') {
       // Get response from GPT-3 API
-      const response = await axios.post(
-        'https://api.openai.com/v1/engines/gpt-3.5-turbo/completions',
-        {
-          prompt: message,
-          max_tokens: 60,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer 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',
-          },
-        }
+      const { data } = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: history,
+      });
+      setMessages(
+        oldMessages => [...oldMessages, { text: data.choices[0].message.content, timestamp: new Date(), sender: 'ChatGPT' }]
       );
-
-      setMessages(oldMessages => [...oldMessages, { text: response.data.choices[0].text, timestamp: new Date(), sender: 'ChatGPT' }]);
+      setHistory(oldHistory => [...oldHistory, data.choices[0].message]);
     }
   };
 
@@ -97,11 +90,6 @@ const Chat = () => {
       <ChatInput sendMessage={sendMessage} />
     </Box>
   );
-};
-
-
-const App: React.FC = () => {
-  return <Chat />;
 };
 
 export default App;
